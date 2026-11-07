@@ -77,7 +77,7 @@ function faixaPlano() {
   const p = S.eu.plano;
   if (p.status === "teste") {
     const dias = Math.max(1, Math.ceil((new Date(p.ate) - Date.now()) / 86400000));
-    return `<a href="#plano" class="faixa">⭐ Teste grátis: falta${dias > 1 ? "m" : ""} <b>${dias} dia${dias > 1 ? "s" : ""}</b> de Premium</a>`;
+    return `<a href="#plano" class="faixa">Teste grátis: falta${dias > 1 ? "m" : ""} <b>${dias} dia${dias > 1 ? "s" : ""}</b> de Premium</a>`;
   }
   if (p.status === "basico") return `<a href="#plano" class="faixa faixa-basico">Você está no plano Básico. <b>Assine o Premium</b> para usar o Kliky e tudo mais.</a>`;
   return "";
@@ -86,12 +86,12 @@ function itemEvento(e, hora = true) {
   const ini = e.ini || (e.inicio ? new Date(e.inicio) : null);
   const quando = e.dia_todo ? "Dia todo" : ini && hora ? horaTxt(ini) + (e.fim ? "–" + horaTxt(e.fim) : "") : "";
   const prio = e.prioridade === 1 ? `<span class="pill pill-alta">Importante</span>` : "";
-  const grupo = e.agenda_nome ? `<span class="pill">👥 ${esc(e.agenda_nome)}</span>` : "";
+  const grupo = e.agenda_nome ? `<span class="pill">${esc(e.agenda_nome)}</span>` : "";
   return `<div class="item ${e.concluido ? "feito" : ""} ${e.tipo === "tarefa" ? "item-tarefa" : ""}">
     ${e.tipo === "tarefa" ? `<button class="check ${e.concluido ? "ok" : ""}" data-concluir="${e.id}" aria-label="Concluir">${e.concluido ? "✓" : ""}</button>` : ""}
     <a class="item-corpo" href="#editar/${e.id}">
       <strong>${esc(e.titulo)}</strong>
-      <span class="item-meta">${quando ? `<span>${quando}</span>` : ""}${e.local ? `<span>📍 ${esc(e.local)}</span>` : ""}${prio}${grupo}</span>
+      <span class="item-meta">${quando ? `<span>${quando}</span>` : ""}${e.local ? `<span>${esc(e.local)}</span>` : ""}${prio}${grupo}</span>
     </a>
   </div>`;
 }
@@ -100,7 +100,7 @@ function ligarConcluir(raiz = tela) {
     const e = S.eventos.find(x => x.id === Number(b.dataset.concluir));
     const novo = await tentar(() => api("PUT", `/eventos/${e.id}`, { concluido: !e.concluido }));
     Object.assign(e, novo);
-    if (novo.concluido) toast("Boa! Tarefa concluída ✅");
+    if (novo.concluido) toast("Boa! Tarefa concluída");
     render();
   }));
 }
@@ -122,7 +122,7 @@ telas.hoje = () => {
       <div class="bloco-topo"><h2>Seu dia</h2><button class="link" id="reorg">↻ Reorganizar</button></div>
       ${diaTodo.map(e => itemEvento(e)).join("")}
       ${linha.length ? `<div class="linha-tempo">${linha.map(e => itemEvento(e)).join("")}</div>`
-        : `<p class="vazio">Nada marcado para o resto de hoje. Aproveite! 😎</p>`}
+        : `<p class="vazio">Nada marcado para o resto de hoje. Aproveite!</p>`}
       ${naoCoube.length ? `<p class="aviso-leve">Não coube hoje: ${naoCoube.map(t => esc(t.titulo)).join(", ")}.</p>` : ""}`;
   } else {
     dia = `<div class="bloco-topo"><h2>Hoje</h2></div>
@@ -148,7 +148,7 @@ telas.hoje = () => {
       ${contasPerto.map(c => `<div class="item"><div class="item-corpo"><strong>${esc(c.descricao)}</strong>
         <span class="item-meta"><span>${real(c.valor)}</span><span class="${diaDeConta(c.vencimento) < inicioDoDia() ? "atrasada" : ""}">vence ${esc(dataCurta(diaDeConta(c.vencimento)))}</span></span></div></div>`).join("")}</section>` : ""}
     ${S.habitos.length ? `<section class="bloco"><div class="bloco-topo"><h2>Hábitos de hoje</h2><a class="link" href="#habitos">Ver todos</a></div>
-      <div class="chips">${S.habitos.map(hb => `<button class="chip ${hb.dias.includes(hojeISO) ? "ok" : ""}" data-habito="${hb.id}">${esc(hb.icone)} ${esc(hb.nome)}</button>`).join("")}</div></section>` : ""}
+      <div class="chips">${S.habitos.map(hb => `<button class="chip ${hb.dias.includes(hojeISO) ? "ok" : ""}" data-habito="${hb.id}">${esc(hb.nome)}</button>`).join("")}</div></section>` : ""}
   `;
 
   $("#rapido").addEventListener("submit", async ev => {
@@ -160,7 +160,7 @@ telas.hoje = () => {
     if (r) { ev.target.reset(); toast(r); render(); }
   });
   const reorg = $("#reorg");
-  if (reorg) reorg.addEventListener("click", () => { render(); toast("Dia reorganizado a partir de agora 🗓️"); });
+  if (reorg) reorg.addEventListener("click", () => { render(); toast("Dia reorganizado a partir de agora"); });
   ligarConcluir();
   tela.querySelectorAll("[data-habito]").forEach(b => b.addEventListener("click", () => marcarHabito(Number(b.dataset.habito), hojeISO)));
 };
@@ -227,7 +227,7 @@ function formEvento(e = null, tipoInicial = "evento") {
       </label>
       <label>Local<input name="local" maxlength="160" value="${esc(e?.local)}" placeholder="Opcional"></label>
       ${agendas.length ? `<label>Agenda
-        <select name="agenda_id"><option value="">Só minha</option>${agendas.map(a => `<option value="${a.id}" ${e?.agenda_id === a.id ? "selected" : ""}>👥 ${esc(a.nome)}</option>`).join("")}</select>
+        <select name="agenda_id"><option value="">Só minha</option>${agendas.map(a => `<option value="${a.id}" ${e?.agenda_id === a.id ? "selected" : ""}>${esc(a.nome)}</option>`).join("")}</select>
       </label>` : ""}
       <div class="acoes">
         <button class="btn" type="submit">Salvar</button>
@@ -257,7 +257,7 @@ function formEvento(e = null, tipoInicial = "evento") {
     } else {
       corpo.inicio = null; corpo.dia_todo = false; corpo.lembrete_min = null;
     }
-    const salvo = await tentar(() => e ? api("PUT", `/eventos/${e.id}`, corpo) : api("POST", "/eventos", corpo), "Salvo ✅");
+    const salvo = await tentar(() => e ? api("PUT", `/eventos/${e.id}`, corpo) : api("POST", "/eventos", corpo), "Salvo");
     await carregarEventos();
     location.hash = salvo.tipo === "tarefa" ? "#agenda" : "#agenda";
   });
@@ -286,12 +286,12 @@ async function criarPeloKliky(frase) {
     if (!r.vencimento) return `Qual o vencimento de "${r.titulo}"? Tenta: "pagar ${r.titulo.toLowerCase()} dia 10 R$ 100".`;
     const c = await tentar(() => api("POST", "/contas", { descricao: r.titulo, valor: r.valor || 0, vencimento: diaISO(r.vencimento) }));
     S.contas.push(c);
-    return { msg: `💰 Conta "${c.descricao}" de ${real(c.valor)} com vencimento ${dataCurta(r.vencimento)}.`, desfazer: ["contas", c.id] };
+    return { msg: `Conta "${c.descricao}" de ${real(c.valor)} com vencimento ${dataCurta(r.vencimento)}.`, desfazer: ["contas", c.id] };
   }
   if (r.tipo === "habito") {
-    const hb = await tentar(() => api("POST", "/habitos", { nome: r.titulo, icone: "⭐", meta_semana: 7 }));
+    const hb = await tentar(() => api("POST", "/habitos", { nome: r.titulo, meta_semana: 7 }));
     S.habitos.push(hb);
-    return { msg: `🔥 Hábito "${hb.nome}" criado. Marque todo dia na tela Hábitos!`, desfazer: ["habitos", hb.id] };
+    return { msg: `Hábito "${hb.nome}" criado. Marque todo dia na tela Hábitos!`, desfazer: ["habitos", hb.id] };
   }
   const corpo = {
     tipo: r.tipo, titulo: r.titulo, prioridade: r.prioridade, duracao_min: r.duracao_min,
@@ -303,10 +303,10 @@ async function criarPeloKliky(frase) {
   }
   const ev = await tentar(() => api("POST", "/eventos", corpo));
   S.eventos.push(ev);
-  if (ev.tipo === "tarefa") return { msg: `✅ Tarefa "${ev.titulo}" anotada. Vou encaixar no seu dia.`, desfazer: ["eventos", ev.id] };
+  if (ev.tipo === "tarefa") return { msg: `Tarefa "${ev.titulo}" anotada. Vou encaixar no seu dia.`, desfazer: ["eventos", ev.id] };
   const ini = new Date(ev.inicio);
   return {
-    msg: `🗓️ "${ev.titulo}" marcado para ${dataCurta(ini)}${ev.dia_todo ? " (dia todo)" : " às " + horaTxt(ini)}${ev.lembrete_min ? `. Aviso ${ev.lembrete_min >= 60 ? ev.lembrete_min / 60 + "h" : ev.lembrete_min + " min"} antes` : ""}.`,
+    msg: `"${ev.titulo}" marcado para ${dataCurta(ini)}${ev.dia_todo ? " (dia todo)" : " às " + horaTxt(ini)}${ev.lembrete_min ? `. Aviso ${ev.lembrete_min >= 60 ? ev.lembrete_min / 60 + "h" : ev.lembrete_min + " min"} antes` : ""}.`,
     desfazer: ["eventos", ev.id]
   };
 }
@@ -321,11 +321,11 @@ function responderPergunta(frase) {
     const evs = eventosDoDia(d);
     return evs.length
       ? `${/amanha/.test(n) ? "Amanhã" : "Hoje"} você tem: ${evs.map(e => `${e.dia_todo ? "" : horaTxt(new Date(e.inicio)) + " "}${e.titulo}`).join(", ")}.`
-      : `${/amanha/.test(n) ? "Amanhã" : "Hoje"} está livre! 😎`;
+      : `${/amanha/.test(n) ? "Amanhã" : "Hoje"} está livre!`;
   }
   if (/\b(contas?|vence|vencer|pagar)\b.*\?$|^(minhas )?contas\??$/.test(n)) {
     const ab = S.contas.filter(c => !c.paga);
-    return ab.length ? `Contas em aberto: ${ab.map(c => `${c.descricao} (${real(c.valor)}, ${dataCurta(diaDeConta(c.vencimento))})`).join("; ")}.` : "Nenhuma conta em aberto. 🎉";
+    return ab.length ? `Contas em aberto: ${ab.map(c => `${c.descricao} (${real(c.valor)}, ${dataCurta(diaDeConta(c.vencimento))})`).join("; ")}.` : "Nenhuma conta em aberto.";
   }
   if (/^(oi|ola|e ai|bom dia|boa tarde|boa noite)\b/.test(n)) return `Oi, ${S.eu.nome.split(" ")[0]}! Me diga um compromisso, tarefa, conta ou hábito que eu organizo.`;
   if (/\b(ajuda|como funciona|o que voce faz)\b/.test(n)) return "Eu entendo frases como: \"dentista sexta 15h\", \"pagar luz dia 10 R$ 120\", \"estudar por 2h urgente\", \"beber água todo dia\" ou \"o que tenho amanhã?\".";
@@ -334,7 +334,7 @@ function responderPergunta(frase) {
 
 telas.kliky = () => {
   if (!premium()) { tela.innerHTML = bloqueio("O Kliky é do Premium", "Com ele você escreve do seu jeito e ele cria compromissos, tarefas, contas e hábitos sozinho."); return; }
-  if (!S.chat.length) S.chat.push({ de: "kliky", t: `Oi, ${S.eu.nome.split(" ")[0]}! Me diga o que precisa organizar. 🤖` });
+  if (!S.chat.length) S.chat.push({ de: "kliky", t: `Oi, ${S.eu.nome.split(" ")[0]}! Me diga o que precisa organizar.` });
   tela.innerHTML = `
     <div class="cabeca"><div><p class="sub">Seu assistente</p><h1>Kliky</h1></div></div>
     <section class="chat">
@@ -373,7 +373,7 @@ telas.kliky = () => {
     const lista = { eventos: "eventos", contas: "contas", habitos: "habitos" }[tipo];
     S[lista] = S[lista].filter(x => x.id !== Number(id));
     S.chat.forEach(m => { if (m.desfazer && m.desfazer.join(":") === b.dataset.desfazer) delete m.desfazer; });
-    S.chat.push({ de: "kliky", t: "Pronto, desfiz. 👍" });
+    S.chat.push({ de: "kliky", t: "Pronto, desfiz." });
     render();
   }));
 };
@@ -451,7 +451,7 @@ async function marcarHabito(id, dia) {
   const r = await tentar(() => api("POST", `/habitos/${id}/marcar`, { dia }));
   const h = S.habitos.find(x => x.id === id);
   h.dias = r.marcado ? [...h.dias, dia] : h.dias.filter(d => d !== dia);
-  if (r.marcado) toast(`${h.icone} Mandou bem!`);
+  if (r.marcado) toast("Mandou bem!");
   render();
 }
 function sequencia(h) {
@@ -470,8 +470,8 @@ telas.habitos = () => {
         const feitos = dias.filter(d => h.dias.includes(diaISO(d))).length;
         return `<div class="habito">
           <div class="habito-topo">
-            <strong>${esc(h.icone)} ${esc(h.nome)}</strong>
-            <span class="pill">🔥 ${sequencia(h)} dia${sequencia(h) === 1 ? "" : "s"}</span>
+            <strong>${esc(h.nome)}</strong>
+            <span class="pill">${sequencia(h)} dia${sequencia(h) === 1 ? "" : "s"}</span>
             <span class="sub">${feitos}/${h.meta_semana} na semana</span>
             <button class="link pequeno" data-apagar="${h.id}">Excluir</button>
           </div>
@@ -485,17 +485,16 @@ telas.habitos = () => {
     </section>
     <form class="form cartao" id="fHab">
       <h2>Novo hábito</h2>
-      <div class="grade3">
+      <div class="grade2">
         <label>Nome<input name="nome" required maxlength="80" placeholder="Ex.: Beber água"></label>
-        <label>Ícone<select name="icone">${["💧", "📚", "🏃", "🧘", "🥗", "😴", "💪", "📖", "🎯", "⭐"].map(i => `<option>${i}</option>`).join("")}</select></label>
-        <label>Vezes por semana<select name="meta_semana">${[7, 6, 5, 4, 3, 2, 1].map(n => `<option>${n}</option>`).join("")}</select></label>
+                <label>Vezes por semana<select name="meta_semana">${[7, 6, 5, 4, 3, 2, 1].map(n => `<option>${n}</option>`).join("")}</select></label>
       </div>
       <button class="btn btn-small" type="submit">Criar hábito</button>
     </form>`;
   tela.querySelectorAll("[data-h]").forEach(b => b.addEventListener("click", () => marcarHabito(Number(b.dataset.h), b.dataset.d)));
   $("#fHab").addEventListener("submit", async ev => {
     ev.preventDefault();
-    const h = await tentar(() => api("POST", "/habitos", Object.fromEntries(new FormData(ev.target))), "Hábito criado 🔥");
+    const h = await tentar(() => api("POST", "/habitos", Object.fromEntries(new FormData(ev.target))), "Hábito criado");
     S.habitos.push(h);
     render();
   });
@@ -515,11 +514,11 @@ telas.grupos = () => {
     <section class="bloco">
       ${S.agendas.length ? S.agendas.map(a => `
         <div class="cartao grupo">
-          <div class="bloco-topo"><h2>👥 ${esc(a.nome)}</h2>
+          <div class="bloco-topo"><h2>${esc(a.nome)}</h2>
             ${a.sou_dono ? `<button class="link pequeno" data-apagar-ag="${a.id}">Apagar grupo</button>`
               : `<button class="link pequeno" data-sair="${a.id}">Sair do grupo</button>`}
           </div>
-          <div class="membros">${(a.membros || []).map(m => `<span class="pill">${esc(m.nome)}${m.id === a.dono_id ? " 👑" : ""}
+          <div class="membros">${(a.membros || []).map(m => `<span class="pill">${esc(m.nome)}${m.id === a.dono_id ? "" : ""}
             ${a.sou_dono && m.id !== a.dono_id ? `<button class="x" data-remover="${a.id}:${m.id}" aria-label="Remover">✕</button>` : ""}</span>`).join("")}</div>
           ${a.sou_dono && podeCriar ? `<form class="linha-form" data-add="${a.id}">
             <input type="email" name="email" required placeholder="E-mail de quem já tem conta">
@@ -591,10 +590,10 @@ telas.config = () => {
       <button class="btn btn-small" type="submit">Salvar</button>
     </form>
     <section class="cartao config-linha">
-      <div><strong>Avisos no aparelho</strong><p class="sub">${notif === "granted" ? "Ativados ✅" : notif === "denied" ? "Bloqueados no navegador" : notif === "indisponivel" ? "Não suportado neste navegador" : "Receba lembretes dos compromissos"}</p></div>
+      <div><strong>Avisos no aparelho</strong><p class="sub">${notif === "granted" ? "Ativados" : notif === "denied" ? "Bloqueados no navegador" : notif === "indisponivel" ? "Não suportado neste navegador" : "Receba lembretes dos compromissos"}</p></div>
       ${notif === "default" ? `<button class="btn btn-small" id="ativarNotif">Ativar</button>` : ""}
     </section>
-    <a href="#plano" class="cartao config-linha so-cel"><div><strong>⭐ Plano</strong><p class="sub">Ver ou assinar o Premium</p></div><span>›</span></a>
+    <a href="#plano" class="cartao config-linha so-cel"><div><strong>Plano</strong><p class="sub">Ver ou assinar o Premium</p></div><span>›</span></a>
     <form class="form cartao" id="fSenha">
       <h2>Trocar senha</h2>
       <div class="grade2">
@@ -623,7 +622,7 @@ telas.config = () => {
   if (an) an.addEventListener("click", async () => { await Notification.requestPermission(); render(); });
   $("#fSenha").addEventListener("submit", async ev => {
     ev.preventDefault();
-    await tentar(() => api("PUT", "/eu/senha", Object.fromEntries(new FormData(ev.target))), "Senha trocada ✅");
+    await tentar(() => api("PUT", "/eu/senha", Object.fromEntries(new FormData(ev.target))), "Senha trocada");
     ev.target.reset();
   });
   $("#sair").addEventListener("click", () => Faccliky.sair());
@@ -654,7 +653,7 @@ window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); }
 function avisados() { try { return JSON.parse(localStorage.getItem("faccliky_avisados") || "{}"); } catch { return {}; } }
 function salvarAvisados(o) { try { localStorage.setItem("faccliky_avisados", JSON.stringify(o)); } catch {} }
 function avisar(titulo, corpo) {
-  toast(`🔔 ${titulo}: ${corpo}`, 8000);
+  toast(`${titulo}: ${corpo}`, 8000);
   if ("Notification" in window && Notification.permission === "granted") {
     try { new Notification(titulo, { body: corpo, icon: "assets/kliky.svg" }); } catch {}
   }

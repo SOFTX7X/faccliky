@@ -20,11 +20,11 @@ document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 // Kliky: falas do balão
 const bubble = document.getElementById("botBubble");
 const falas = [
-  "Oi! Eu sou o Kliky 👋",
+  "Oi! Eu sou o Kliky",
   "Me diz \"dentista sexta 15h\" que eu organizo.",
-  "Eu te aviso antes das contas vencerem 💰",
-  "Bora montar seu dia juntos? 🗓️",
-  "Bebeu água hoje? Eu lembro você 💧"
+  "Eu te aviso antes das contas vencerem",
+  "Bora montar seu dia juntos?",
+  "Bebeu água hoje? Eu lembro você"
 ];
 let fala = 0;
 setInterval(() => {
@@ -51,10 +51,10 @@ window.addEventListener("touchmove", e => olhar(e.touches[0].clientX, e.touches[
 
 // Demonstração: digitando
 const exemplos = [
-  { texto: "dentista sexta às 15h", titulo: "Dentista", quando: "Sexta, 15:00", aviso: "🔔 Aviso 1h antes" },
-  { texto: "pagar luz dia 10", titulo: "Conta de luz", quando: "Dia 10, o dia todo", aviso: "💰 Aviso 2 dias antes" },
-  { texto: "academia seg qua sex 7h", titulo: "Academia", quando: "Seg, Qua e Sex, 07:00", aviso: "🔥 Hábito da semana" },
-  { texto: "reunião com a equipe amanhã 9h", titulo: "Reunião da equipe", quando: "Amanhã, 09:00", aviso: "👥 Compartilhado com 4 pessoas" }
+  { texto: "dentista sexta às 15h", titulo: "Dentista", quando: "Sexta, 15:00", aviso: "Aviso 1h antes" },
+  { texto: "pagar luz dia 10", titulo: "Conta de luz", quando: "Dia 10, o dia todo", aviso: "Aviso 2 dias antes" },
+  { texto: "academia seg qua sex 7h", titulo: "Academia", quando: "Seg, Qua e Sex, 07:00", aviso: "Hábito da semana" },
+  { texto: "reunião com a equipe amanhã 9h", titulo: "Reunião da equipe", quando: "Amanhã, 09:00", aviso: "Compartilhado com 4 pessoas" }
 ];
 const typing = document.getElementById("typing");
 const demoEvent = document.getElementById("demoEvent");

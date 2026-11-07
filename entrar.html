@@ -1,103 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar — Faccliky</title>
-  <meta name="theme-color" content="#05060f">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="app.css">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Entrar — Faccliky</title>
+ <meta name="theme-color" content="#0f0f12">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="app.css">
 </head>
 <body class="auth-page">
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow g1" aria-hidden="true"></div>
-  <div class="bg-glow g2" aria-hidden="true"></div>
 
-  <a href="index.html" class="logo auth-logo">
-    <span class="logo-mark">F</span>
-    <span class="logo-text">Faccliky</span>
-  </a>
+ <a href="index.html" class="logo auth-logo">
+ <span class="logo-mark">F</span>
+ <span class="logo-text">Faccliky</span>
+ </a>
 
-  <main class="auth">
-    <div class="auth-bot">
-      <div class="bubble" id="fala">Que bom te ver por aqui! 👋</div>
-      <img src="assets/kliky.svg" alt="Kliky, o robô do Faccliky" width="170" height="196">
-    </div>
+ <main class="auth">
+ <div class="auth-bot">
+ <div class="bubble" id="fala">Que bom te ver por aqui! </div>
+ <img src="assets/kliky.svg" alt="Kliky, o robô do Faccliky" width="170" height="196">
+ </div>
 
-    <section class="auth-card">
-      <div class="tabs" role="tablist">
-        <button class="tab ativo" data-aba="entrar" role="tab">Entrar</button>
-        <button class="tab" data-aba="cadastro" role="tab">Criar conta</button>
-      </div>
+ <section class="auth-card">
+ <div class="tabs" role="tablist">
+ <button class="tab ativo" data-aba="entrar" role="tab">Entrar</button>
+ <button class="tab" data-aba="cadastro" role="tab">Criar conta</button>
+ </div>
 
-      <form id="formEntrar" class="form" autocomplete="on">
-        <label>E-mail
-          <input type="email" name="email" required autocomplete="email" placeholder="voce@email.com">
-        </label>
-        <label>Senha
-          <input type="password" name="senha" required autocomplete="current-password" placeholder="Sua senha">
-        </label>
-        <p class="msg" role="alert"></p>
-        <button class="btn btn-full" type="submit">Entrar</button>
-      </form>
+ <form id="formEntrar" class="form" autocomplete="on">
+ <label>E-mail
+ <input type="email" name="email" required autocomplete="email" placeholder="voce@email.com">
+ </label>
+ <label>Senha
+ <input type="password" name="senha" required autocomplete="current-password" placeholder="Sua senha">
+ </label>
+ <p class="msg" role="alert"></p>
+ <button class="btn btn-full" type="submit">Entrar</button>
+ </form>
 
-      <form id="formCadastro" class="form" hidden autocomplete="on">
-        <label>Nome
-          <input type="text" name="nome" required maxlength="80" autocomplete="name" placeholder="Como quer ser chamado">
-        </label>
-        <label>E-mail
-          <input type="email" name="email" required autocomplete="email" placeholder="voce@email.com">
-        </label>
-        <label>Senha
-          <input type="password" name="senha" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
-        </label>
-        <p class="msg" role="alert"></p>
-        <button class="btn btn-full" type="submit">Criar conta e ganhar 7 dias grátis</button>
-        <p class="nota">Sem cartão. Depois do teste, você escolhe assinar ou seguir no plano básico.</p>
-      </form>
-    </section>
-  </main>
+ <form id="formCadastro" class="form" hidden autocomplete="on">
+ <label>Nome
+ <input type="text" name="nome" required maxlength="80" autocomplete="name" placeholder="Como quer ser chamado">
+ </label>
+ <label>E-mail
+ <input type="email" name="email" required autocomplete="email" placeholder="voce@email.com">
+ </label>
+ <label>Senha
+ <input type="password" name="senha" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+ </label>
+ <p class="msg" role="alert"></p>
+ <button class="btn btn-full" type="submit">Criar conta e ganhar 7 dias grátis</button>
+ <p class="nota">Sem cartão. Depois do teste, você escolhe assinar ou seguir no plano básico.</p>
+ </form>
+ </section>
+ </main>
 
-  <script src="config.js"></script>
-  <script src="api.js"></script>
-  <script>
-    if (Faccliky.token()) location.replace("app.html");
+ <script src="config.js"></script>
+ <script src="api.js"></script>
+ <script>
+ if (Faccliky.token()) location.replace("app.html");
 
-    const fala = document.getElementById("fala");
-    const formEntrar = document.getElementById("formEntrar");
-    const formCadastro = document.getElementById("formCadastro");
+ const fala = document.getElementById("fala");
+ const formEntrar = document.getElementById("formEntrar");
+ const formCadastro = document.getElementById("formCadastro");
 
-    function mostrarAba(aba) {
-      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("ativo", t.dataset.aba === aba));
-      formEntrar.hidden = aba !== "entrar";
-      formCadastro.hidden = aba !== "cadastro";
-      fala.textContent = aba === "entrar" ? "Que bom te ver por aqui! 👋" : "Bora começar? São 7 dias de Premium grátis 🚀";
-    }
-    document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => mostrarAba(t.dataset.aba)));
-    if (location.hash === "#cadastro") mostrarAba("cadastro");
+ function mostrarAba(aba) {
+ document.querySelectorAll(".tab").forEach(t => t.classList.toggle("ativo", t.dataset.aba === aba));
+ formEntrar.hidden = aba !== "entrar";
+ formCadastro.hidden = aba !== "cadastro";
+ fala.textContent = aba === "entrar" ? "Que bom te ver por aqui! " : "Bora começar? São 7 dias de Premium grátis ";
+ }
+ document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => mostrarAba(t.dataset.aba)));
+ if (location.hash === "#cadastro") mostrarAba("cadastro");
 
-    async function enviar(form, caminho) {
-      const msg = form.querySelector(".msg");
-      const botao = form.querySelector("button[type=submit]");
-      msg.textContent = "";
-      botao.disabled = true;
-      try {
-        const dados = Object.fromEntries(new FormData(form));
-        const r = await Faccliky.api("POST", caminho, dados);
-        Faccliky.salvarToken(r.token);
-        fala.textContent = `Prontinho, ${r.usuario.nome.split(" ")[0]}! 🎉`;
-        setTimeout(() => location.replace("app.html"), 500);
-      } catch (e) {
-        msg.textContent = e.message;
-        fala.textContent = "Ops! Confere os dados aí 👀";
-        botao.disabled = false;
-      }
-    }
-    formEntrar.addEventListener("submit", e => { e.preventDefault(); enviar(formEntrar, "/entrar"); });
-    formCadastro.addEventListener("submit", e => { e.preventDefault(); enviar(formCadastro, "/cadastro"); });
-  </script>
+ async function enviar(form, caminho) {
+ const msg = form.querySelector(".msg");
+ const botao = form.querySelector("button[type=submit]");
+ msg.textContent = "";
+ botao.disabled = true;
+ try {
+ const dados = Object.fromEntries(new FormData(form));
+ const r = await Faccliky.api("POST", caminho, dados);
+ Faccliky.salvarToken(r.token);
+ fala.textContent = `Prontinho, ${r.usuario.nome.split(" ")[0]}! `;
+ setTimeout(() => location.replace("app.html"), 500);
+ } catch (e) {
+ msg.textContent = e.message;
+ fala.textContent = "Ops! Confere os dados aí ";
+ botao.disabled = false;
+ }
+ }
+ formEntrar.addEventListener("submit", e => { e.preventDefault(); enviar(formEntrar, "/entrar"); });
+ formCadastro.addEventListener("submit", e => { e.preventDefault(); enviar(formCadastro, "/cadastro"); });
+ </script>
 </body>
 </html>

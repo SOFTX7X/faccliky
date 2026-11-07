@@ -1,294 +1,287 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Faccliky — Sua agenda inteligente</title>
-  <meta name="description" content="Faccliky: agenda inteligente que organiza seus compromissos, monta seu dia, cuida das suas contas e acompanha seus hábitos. 7 dias grátis.">
-  <meta name="theme-color" content="#05060f">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Faccliky — Sua agenda inteligente</title>
+ <meta name="description" content="Faccliky: agenda inteligente que organiza seus compromissos, monta seu dia, cuida das suas contas e acompanha seus hábitos. 7 dias grátis.">
+ <meta name="theme-color" content="#0f0f12">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="bg-glow g1" aria-hidden="true"></div>
-  <div class="bg-glow g2" aria-hidden="true"></div>
 
-  <!-- Topo -->
-  <header class="topbar">
-    <a href="#inicio" class="logo">
-      <span class="logo-mark">F</span>
-      <span class="logo-text">Faccliky</span>
-    </a>
-    <nav class="menu" id="menu">
-      <a href="#recursos">Recursos</a>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#planos">Planos</a>
-      <a href="#duvidas">Dúvidas</a>
-    </nav>
-    <a href="entrar.html" class="btn btn-ghost btn-small">Entrar</a>
-    <a href="entrar.html#cadastro" class="btn btn-small">Começar grátis</a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
+ <!-- Topo -->
+ <header class="topbar">
+ <a href="#inicio" class="logo">
+ <span class="logo-mark">F</span>
+ <span class="logo-text">Faccliky</span>
+ </a>
+ <nav class="menu" id="menu">
+ <a href="#recursos">Recursos</a>
+ <a href="#como-funciona">Como funciona</a>
+ <a href="#planos">Planos</a>
+ <a href="#duvidas">Dúvidas</a>
+ </nav>
+ <a href="entrar.html" class="btn btn-ghost btn-small">Entrar</a>
+ <a href="entrar.html#cadastro" class="btn btn-small">Começar grátis</a>
+ <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+ <span></span><span></span><span></span>
+ </button>
+ </header>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero" id="inicio">
-      <div class="hero-text reveal">
-        <span class="tag">Agenda inteligente</span>
-        <h1>Seu dia <span class="neon-text">organizado sozinho</span>.</h1>
-        <p class="lead">Escreva do seu jeito, tipo <em>"dentista sexta às 15h"</em>, e o Faccliky cria o compromisso, avisa na hora certa e monta o resto do seu dia.</p>
-        <div class="hero-actions">
-          <a href="entrar.html#cadastro" class="btn">Testar 7 dias grátis</a>
-          <a href="#recursos" class="btn btn-ghost">Ver recursos</a>
-        </div>
-        <ul class="hero-points">
-          <li>Sem cartão para testar</li>
-          <li>Celular e computador</li>
-          <li>Cancele quando quiser</li>
-        </ul>
-      </div>
+ <main>
+ <!-- Hero -->
+ <section class="hero" id="inicio">
+ <div class="hero-text reveal">
+ <span class="tag">Agenda inteligente</span>
+ <h1>Seu dia <span class="neon-text">organizado sozinho</span>.</h1>
+ <p class="lead">Escreva do seu jeito, tipo <em>"dentista sexta às 15h"</em>, e o Faccliky cria o compromisso, avisa na hora certa e monta o resto do seu dia.</p>
+ <div class="hero-actions">
+ <a href="entrar.html#cadastro" class="btn">Testar 7 dias grátis</a>
+ <a href="#recursos" class="btn btn-ghost">Ver recursos</a>
+ </div>
+ <ul class="hero-points">
+ <li>Sem cartão para testar</li>
+ <li>Celular e computador</li>
+ <li>Cancele quando quiser</li>
+ </ul>
+ </div>
 
-      <div class="hero-bot reveal">
-        <div class="bubble" id="botBubble">Oi! Eu sou o Kliky 👋</div>
-        <div class="bot-wrap">
-          <svg class="bot" id="bot" viewBox="0 0 200 230" role="img" aria-label="Kliky, o robô assistente do Faccliky">
-            <defs>
-              <linearGradient id="gHead" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#1b1f45"/>
-                <stop offset="1" stop-color="#0c0e26"/>
-              </linearGradient>
-              <linearGradient id="gNeon" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#22e6ff"/>
-                <stop offset="1" stop-color="#b44dff"/>
-              </linearGradient>
-              <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3" result="b"/>
-                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
+ <div class="hero-bot reveal">
+ <div class="bubble" id="botBubble">Oi! Eu sou o Kliky </div>
+ <div class="bot-wrap">
+ <svg class="bot" id="bot" viewBox="0 0 200 230" role="img" aria-label="Kliky, o robô assistente do Faccliky">
+ <defs>
+ <linearGradient id="gHead" x1="0" y1="0" x2="0" y2="1">
+ <stop offset="0" stop-color="#2a2a33"/>
+ <stop offset="1" stop-color="#17171c"/>
+ </linearGradient>
+ <linearGradient id="gNeon" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0" stop-color="#a78bfa"/>
+ <stop offset="1" stop-color="#7c3aed"/>
+ </linearGradient>
+ </defs>
 
-            <!-- sombra -->
-            <ellipse class="bot-shadow" cx="100" cy="222" rx="46" ry="6"/>
+ <!-- sombra -->
+ <ellipse class="bot-shadow" cx="100" cy="222" rx="46" ry="6"/>
 
-            <g class="bot-body">
-              <!-- antena -->
-              <line x1="100" y1="42" x2="100" y2="18" stroke="url(#gNeon)" stroke-width="4" stroke-linecap="round"/>
-              <circle class="antenna" cx="100" cy="14" r="7" fill="#ff3df2" filter="url(#fGlow)"/>
+ <g class="bot-body">
+ <!-- antena -->
+ <line x1="100" y1="42" x2="100" y2="18" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/>
+ <circle class="antenna" cx="100" cy="14" r="7" fill="#8b5cf6"/>
 
-              <!-- orelhas -->
-              <rect x="20" y="78" width="14" height="30" rx="7" fill="#151838" stroke="url(#gNeon)" stroke-width="2.5"/>
-              <rect x="166" y="78" width="14" height="30" rx="7" fill="#151838" stroke="url(#gNeon)" stroke-width="2.5"/>
+ <!-- orelhas -->
+ <rect x="20" y="78" width="14" height="30" rx="7" fill="#222229" stroke="url(#gNeon)" stroke-width="2.5"/>
+ <rect x="166" y="78" width="14" height="30" rx="7" fill="#222229" stroke="url(#gNeon)" stroke-width="2.5"/>
 
-              <!-- cabeça -->
-              <rect x="32" y="40" width="136" height="104" rx="42" fill="url(#gHead)" stroke="url(#gNeon)" stroke-width="3" filter="url(#fGlow)"/>
+ <!-- cabeça -->
+ <rect x="32" y="40" width="136" height="104" rx="42" fill="url(#gHead)" stroke="url(#gNeon)" stroke-width="3"/>
 
-              <!-- tela do rosto -->
-              <rect x="50" y="62" width="100" height="62" rx="28" fill="#04050f"/>
+ <!-- tela do rosto -->
+ <rect x="50" y="62" width="100" height="62" rx="28" fill="#0c0c10"/>
 
-              <!-- olhos -->
-              <g class="eyes" id="eyes">
-                <rect class="eye" x="70" y="78" width="18" height="26" rx="9" fill="#22e6ff" filter="url(#fGlow)"/>
-                <rect class="eye" x="112" y="78" width="18" height="26" rx="9" fill="#22e6ff" filter="url(#fGlow)"/>
-              </g>
+ <!-- olhos -->
+ <g class="eyes" id="eyes">
+ <rect class="eye" x="70" y="78" width="18" height="26" rx="9" fill="#a78bfa"/>
+ <rect class="eye" x="112" y="78" width="18" height="26" rx="9" fill="#a78bfa"/>
+ </g>
 
-              <!-- bochechas -->
-              <circle cx="62" cy="110" r="5" fill="#ff3df2" opacity=".55"/>
-              <circle cx="138" cy="110" r="5" fill="#ff3df2" opacity=".55"/>
+ <!-- bochechas -->
+ <circle cx="62" cy="110" r="5" fill="#8b5cf6" opacity=".55"/>
+ <circle cx="138" cy="110" r="5" fill="#8b5cf6" opacity=".55"/>
 
-              <!-- boca -->
-              <path d="M88 112 Q100 120 112 112" stroke="#22e6ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <!-- boca -->
+ <path d="M88 112 Q100 120 112 112" stroke="#a78bfa" stroke-width="3" fill="none" stroke-linecap="round"/>
 
-              <!-- corpo -->
-              <rect x="62" y="150" width="76" height="58" rx="22" fill="url(#gHead)" stroke="url(#gNeon)" stroke-width="3"/>
+ <!-- corpo -->
+ <rect x="62" y="150" width="76" height="58" rx="22" fill="url(#gHead)" stroke="url(#gNeon)" stroke-width="3"/>
 
-              <!-- calendário no peito -->
-              <rect x="82" y="162" width="36" height="32" rx="6" fill="#04050f" stroke="#22e6ff" stroke-width="2"/>
-              <rect x="82" y="162" width="36" height="9" rx="4" fill="#ff3df2"/>
-              <circle cx="91" cy="179" r="2.4" fill="#22e6ff"/>
-              <circle cx="100" cy="179" r="2.4" fill="#22e6ff"/>
-              <circle cx="109" cy="179" r="2.4" fill="#22e6ff"/>
-              <circle cx="91" cy="187" r="2.4" fill="#22e6ff" opacity=".5"/>
-              <circle class="today" cx="100" cy="187" r="3" fill="#ffe24d"/>
+ <!-- calendário no peito -->
+ <rect x="82" y="162" width="36" height="32" rx="6" fill="#0c0c10" stroke="#a78bfa" stroke-width="2"/>
+ <rect x="82" y="162" width="36" height="9" rx="4" fill="#8b5cf6"/>
+ <circle cx="91" cy="179" r="2.4" fill="#a78bfa"/>
+ <circle cx="100" cy="179" r="2.4" fill="#a78bfa"/>
+ <circle cx="109" cy="179" r="2.4" fill="#a78bfa"/>
+ <circle cx="91" cy="187" r="2.4" fill="#a78bfa" opacity=".5"/>
+ <circle class="today" cx="100" cy="187" r="3" fill="#d4d4dc"/>
 
-              <!-- braço esquerdo -->
-              <rect x="46" y="156" width="18" height="36" rx="9" fill="#151838" stroke="url(#gNeon)" stroke-width="2.5"/>
+ <!-- braço esquerdo -->
+ <rect x="46" y="156" width="18" height="36" rx="9" fill="#222229" stroke="url(#gNeon)" stroke-width="2.5"/>
 
-              <!-- braço direito (acenando) -->
-              <g class="wave-arm">
-                <rect x="136" y="146" width="18" height="38" rx="9" fill="#151838" stroke="url(#gNeon)" stroke-width="2.5"/>
-              </g>
-            </g>
-          </svg>
-          <div class="orbit o1" aria-hidden="true"></div>
-          <div class="orbit o2" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
+ <!-- braço direito (acenando) -->
+ <g class="wave-arm">
+ <rect x="136" y="146" width="18" height="38" rx="9" fill="#222229" stroke="url(#gNeon)" stroke-width="2.5"/>
+ </g>
+ </g>
+ </svg>
+ <div class="orbit o1" aria-hidden="true"></div>
+ <div class="orbit o2" aria-hidden="true"></div>
+ </div>
+ </div>
+ </section>
 
-    <!-- Recursos -->
-    <section class="section" id="recursos">
-      <div class="section-head reveal">
-        <span class="tag">Recursos</span>
-        <h2>Muito mais que uma <span class="neon-text">agenda</span></h2>
-        <p>Tudo o que você precisa para organizar o dia, o dinheiro e a rotina, num lugar só.</p>
-      </div>
+ <!-- Recursos -->
+ <section class="section" id="recursos">
+ <div class="section-head reveal">
+ <span class="tag">Recursos</span>
+ <h2>Muito mais que uma <span class="neon-text">agenda</span></h2>
+ <p>Tudo o que você precisa para organizar o dia, o dinheiro e a rotina, num lugar só.</p>
+ </div>
 
-      <div class="cards">
-        <article class="card reveal">
-          <div class="card-icon">🤖</div>
-          <h3>Assistente que organiza</h3>
-          <p>Escreva como fala. O Kliky entende data, hora e lugar e cria o compromisso com lembretes.</p>
-        </article>
-        <article class="card reveal">
-          <div class="card-icon">🗓️</div>
-          <h3>Dia planejado sozinho</h3>
-          <p>Ele monta sua rotina com prioridades e pausas e reorganiza tudo quando algo atrasa.</p>
-        </article>
-        <article class="card reveal">
-          <div class="card-icon">💰</div>
-          <h3>Contas e metas de gasto</h3>
-          <p>Vencimentos junto da agenda, aviso antes de vencer e controle de quanto ainda pode gastar.</p>
-        </article>
-        <article class="card reveal">
-          <div class="card-icon">🔥</div>
-          <h3>Hábitos e metas</h3>
-          <p>Água, estudo, treino, leitura. Acompanhe sua sequência e veja o progresso da semana.</p>
-        </article>
-        <article class="card reveal">
-          <div class="card-icon">👥</div>
-          <h3>Agenda compartilhada</h3>
-          <p>Família ou equipe na mesma agenda: todos veem, marcam e recebem os avisos.</p>
-        </article>
-        <article class="card reveal">
-          <div class="card-icon">🔔</div>
-          <h3>Avisos na hora certa</h3>
-          <p>Notificações no celular e no computador para você nunca mais esquecer nada.</p>
-        </article>
-      </div>
-    </section>
+ <div class="cards">
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 14h.01M15 14h.01"/></svg></div>
+ <h3>Assistente que organiza</h3>
+ <p>Escreva como fala. O Kliky entende data, hora e lugar e cria o compromisso com lembretes.</p>
+ </article>
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+ <h3>Dia planejado sozinho</h3>
+ <p>Ele monta sua rotina com prioridades e pausas e reorganiza tudo quando algo atrasa.</p>
+ </article>
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+ <h3>Contas e metas de gasto</h3>
+ <p>Vencimentos junto da agenda, aviso antes de vencer e controle de quanto ainda pode gastar.</p>
+ </article>
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 1-3 1-6 1-9.5z"/></svg></div>
+ <h3>Hábitos e metas</h3>
+ <p>Água, estudo, treino, leitura. Acompanhe sua sequência e veja o progresso da semana.</p>
+ </article>
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 21v-1a6 6 0 0 1 12 0v1M16 4.6a3.5 3.5 0 0 1 0 6.8M22 21v-1a6 6 0 0 0-4-5.6"/></svg></div>
+ <h3>Agenda compartilhada</h3>
+ <p>Família ou equipe na mesma agenda: todos veem, marcam e recebem os avisos.</p>
+ </article>
+ <article class="card reveal">
+ <div class="card-icon"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+ <h3>Avisos na hora certa</h3>
+ <p>Notificações no celular e no computador para você nunca mais esquecer nada.</p>
+ </article>
+ </div>
+ </section>
 
-    <!-- Como funciona -->
-    <section class="section" id="como-funciona">
-      <div class="section-head reveal">
-        <span class="tag">Como funciona</span>
-        <h2>Comece em <span class="neon-text">3 passos</span></h2>
-      </div>
+ <!-- Como funciona -->
+ <section class="section" id="como-funciona">
+ <div class="section-head reveal">
+ <span class="tag">Como funciona</span>
+ <h2>Comece em <span class="neon-text">3 passos</span></h2>
+ </div>
 
-      <div class="steps">
-        <div class="step reveal">
-          <span class="step-num">1</span>
-          <h3>Crie sua conta</h3>
-          <p>Leva menos de um minuto e você ganha 7 dias de Premium grátis.</p>
-        </div>
-        <div class="step reveal">
-          <span class="step-num">2</span>
-          <h3>Fale com o Kliky</h3>
-          <p>Conte seus compromissos, contas e metas do jeito que preferir.</p>
-        </div>
-        <div class="step reveal">
-          <span class="step-num">3</span>
-          <h3>Deixe ele organizar</h3>
-          <p>Seu dia fica pronto, com avisos, prioridades e tempo livre.</p>
-        </div>
-      </div>
+ <div class="steps">
+ <div class="step reveal">
+ <span class="step-num">1</span>
+ <h3>Crie sua conta</h3>
+ <p>Leva menos de um minuto e você ganha 7 dias de Premium grátis.</p>
+ </div>
+ <div class="step reveal">
+ <span class="step-num">2</span>
+ <h3>Fale com o Kliky</h3>
+ <p>Conte seus compromissos, contas e metas do jeito que preferir.</p>
+ </div>
+ <div class="step reveal">
+ <span class="step-num">3</span>
+ <h3>Deixe ele organizar</h3>
+ <p>Seu dia fica pronto, com avisos, prioridades e tempo livre.</p>
+ </div>
+ </div>
 
-      <div class="demo reveal">
-        <div class="demo-input">
-          <span class="demo-label">Você escreve</span>
-          <p class="typing" id="typing"></p>
-        </div>
-        <div class="demo-arrow" aria-hidden="true">➜</div>
-        <div class="demo-output">
-          <span class="demo-label">O Kliky cria</span>
-          <div class="event" id="demoEvent">
-            <strong id="evTitle">Dentista</strong>
-            <span id="evWhen">Sexta, 15:00</span>
-            <small id="evAlert">🔔 Aviso 1h antes</small>
-          </div>
-        </div>
-      </div>
-    </section>
+ <div class="demo reveal">
+ <div class="demo-input">
+ <span class="demo-label">Você escreve</span>
+ <p class="typing" id="typing"></p>
+ </div>
+ <div class="demo-arrow" aria-hidden="true"></div>
+ <div class="demo-output">
+ <span class="demo-label">O Kliky cria</span>
+ <div class="event" id="demoEvent">
+ <strong id="evTitle">Dentista</strong>
+ <span id="evWhen">Sexta, 15:00</span>
+ <small id="evAlert"> Aviso 1h antes</small>
+ </div>
+ </div>
+ </div>
+ </section>
 
-    <!-- Planos -->
-    <section class="section" id="planos">
-      <div class="section-head reveal">
-        <span class="tag">Planos</span>
-        <h2>Teste tudo <span class="neon-text">7 dias grátis</span></h2>
-        <p>Depois do teste, escolha continuar no Premium ou seguir com a versão básica.</p>
-      </div>
+ <!-- Planos -->
+ <section class="section" id="planos">
+ <div class="section-head reveal">
+ <span class="tag">Planos</span>
+ <h2>Teste tudo <span class="neon-text">7 dias grátis</span></h2>
+ <p>Depois do teste, escolha continuar no Premium ou seguir com a versão básica.</p>
+ </div>
 
-      <div class="plans">
-        <div class="plan reveal">
-          <h3>Básico</h3>
-          <p class="price">Grátis</p>
-          <ul>
-            <li>Agenda e compromissos</li>
-            <li>Lembretes</li>
-            <li>Acesso no celular e no PC</li>
-          </ul>
-          <a href="entrar.html#cadastro" class="btn btn-ghost">Criar conta grátis</a>
-        </div>
-        <div class="plan plan-pro reveal">
-          <span class="badge">Mais completo</span>
-          <h3>Premium</h3>
-          <p class="price">7 dias grátis</p>
-          <ul>
-            <li>Tudo do Básico</li>
-            <li>Assistente Kliky</li>
-            <li>Dia planejado automático</li>
-            <li>Contas e metas de gasto</li>
-            <li>Hábitos e metas</li>
-            <li>Agenda compartilhada</li>
-          </ul>
-          <a href="entrar.html#cadastro" class="btn">Testar 7 dias grátis</a>
-        </div>
-      </div>
-    </section>
+ <div class="plans">
+ <div class="plan reveal">
+ <h3>Básico</h3>
+ <p class="price">Grátis</p>
+ <ul>
+ <li>Agenda e compromissos</li>
+ <li>Lembretes</li>
+ <li>Acesso no celular e no PC</li>
+ </ul>
+ <a href="entrar.html#cadastro" class="btn btn-ghost">Criar conta grátis</a>
+ </div>
+ <div class="plan plan-pro reveal">
+ <span class="badge">Mais completo</span>
+ <h3>Premium</h3>
+ <p class="price">7 dias grátis</p>
+ <ul>
+ <li>Tudo do Básico</li>
+ <li>Assistente Kliky</li>
+ <li>Dia planejado automático</li>
+ <li>Contas e metas de gasto</li>
+ <li>Hábitos e metas</li>
+ <li>Agenda compartilhada</li>
+ </ul>
+ <a href="entrar.html#cadastro" class="btn">Testar 7 dias grátis</a>
+ </div>
+ </div>
+ </section>
 
-    <!-- Dúvidas -->
-    <section class="section" id="duvidas">
-      <div class="section-head reveal">
-        <span class="tag">Dúvidas</span>
-        <h2>Perguntas <span class="neon-text">frequentes</span></h2>
-      </div>
+ <!-- Dúvidas -->
+ <section class="section" id="duvidas">
+ <div class="section-head reveal">
+ <span class="tag">Dúvidas</span>
+ <h2>Perguntas <span class="neon-text">frequentes</span></h2>
+ </div>
 
-      <div class="faq">
-        <details class="reveal">
-          <summary>Preciso de cartão para testar?</summary>
-          <p>Não. Os 7 dias grátis começam assim que você cria a conta.</p>
-        </details>
-        <details class="reveal">
-          <summary>O que acontece depois dos 7 dias?</summary>
-          <p>Você escolhe assinar o Premium ou continuar usando a versão básica.</p>
-        </details>
-        <details class="reveal">
-          <summary>Funciona no celular?</summary>
-          <p>Sim. O Faccliky funciona no navegador do celular e do computador.</p>
-        </details>
-        <details class="reveal">
-          <summary>Meus dados ficam seguros?</summary>
-          <p>Sim. Sua senha é criptografada e seus compromissos só aparecem para você e para quem você compartilhar.</p>
-        </details>
-      </div>
-    </section>
+ <div class="faq">
+ <details class="reveal">
+ <summary>Preciso de cartão para testar?</summary>
+ <p>Não. Os 7 dias grátis começam assim que você cria a conta.</p>
+ </details>
+ <details class="reveal">
+ <summary>O que acontece depois dos 7 dias?</summary>
+ <p>Você escolhe assinar o Premium ou continuar usando a versão básica.</p>
+ </details>
+ <details class="reveal">
+ <summary>Funciona no celular?</summary>
+ <p>Sim. O Faccliky funciona no navegador do celular e do computador.</p>
+ </details>
+ <details class="reveal">
+ <summary>Meus dados ficam seguros?</summary>
+ <p>Sim. Sua senha é criptografada e seus compromissos só aparecem para você e para quem você compartilhar.</p>
+ </details>
+ </div>
+ </section>
 
-    <!-- Chamada final -->
-    <section class="cta reveal">
-      <h2>Bora organizar sua vida com o <span class="neon-text">Kliky</span>?</h2>
-      <a href="entrar.html#cadastro" class="btn">Começar 7 dias grátis</a>
-    </section>
-  </main>
+ <!-- Chamada final -->
+ <section class="cta reveal">
+ <h2>Bora organizar sua vida com o <span class="neon-text">Kliky</span>?</h2>
+ <a href="entrar.html#cadastro" class="btn">Começar 7 dias grátis</a>
+ </section>
+ </main>
 
-  <footer class="footer">
-    <span class="logo-text small">Faccliky</span>
-    <span>© <span id="year"></span> Faccliky. Todos os direitos reservados.</span>
-  </footer>
+ <footer class="footer">
+ <span class="logo-text small">Faccliky</span>
+ <span>© <span id="year"></span> Faccliky. Todos os direitos reservados.</span>
+ </footer>
 
-  <script src="script.js"></script>
+ <script src="script.js"></script>
 </body>
 </html>
