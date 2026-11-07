@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 230">
+  <style>
+    .b{animation:f 3.6s ease-in-out infinite}
+    @keyframes f{50%{transform:translateY(-10px)}}
+    .s{fill:rgba(34,230,255,.25);transform-origin:100px 222px;animation:s 3.6s ease-in-out infinite}
+    @keyframes s{50%{transform:scaleX(.75);opacity:.5}}
+    .a{animation:a 1.6s ease-in-out infinite}
+    @keyframes a{50%{fill:#22e6ff}}
+    .e{transform-box:fill-box;transform-origin:center;animation:k 4.5s infinite}
+    @keyframes k{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+    .w{transform-origin:145px 182px;animation:w 2.4s ease-in-out infinite}
+    @keyframes w{0%,60%,100%{transform:rotate(0)}70%,90%{transform:rotate(-38deg)}80%{transform:rotate(-12deg)}}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1f45"/><stop offset="1" stop-color="#0c0e26"/></linearGradient>
+    <linearGradient id="n" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e6ff"/><stop offset="1" stop-color="#b44dff"/></linearGradient>
+    <filter id="g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <ellipse class="s" cx="100" cy="222" rx="46" ry="6"/>
+  <g class="b">
+    <line x1="100" y1="42" x2="100" y2="18" stroke="url(#n)" stroke-width="4" stroke-linecap="round"/>
+    <circle class="a" cx="100" cy="14" r="7" fill="#ff3df2" filter="url(#g)"/>
+    <rect x="20" y="78" width="14" height="30" rx="7" fill="#151838" stroke="url(#n)" stroke-width="2.5"/>
+    <rect x="166" y="78" width="14" height="30" rx="7" fill="#151838" stroke="url(#n)" stroke-width="2.5"/>
+    <rect x="32" y="40" width="136" height="104" rx="42" fill="url(#h)" stroke="url(#n)" stroke-width="3" filter="url(#g)"/>
+    <rect x="50" y="62" width="100" height="62" rx="28" fill="#04050f"/>
+    <rect class="e" x="70" y="78" width="18" height="26" rx="9" fill="#22e6ff" filter="url(#g)"/>
+    <rect class="e" x="112" y="78" width="18" height="26" rx="9" fill="#22e6ff" filter="url(#g)"/>
+    <circle cx="62" cy="110" r="5" fill="#ff3df2" opacity=".55"/>
+    <circle cx="138" cy="110" r="5" fill="#ff3df2" opacity=".55"/>
+    <path d="M88 112 Q100 120 112 112" stroke="#22e6ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="62" y="150" width="76" height="58" rx="22" fill="url(#h)" stroke="url(#n)" stroke-width="3"/>
+    <rect x="82" y="162" width="36" height="32" rx="6" fill="#04050f" stroke="#22e6ff" stroke-width="2"/>
+    <rect x="82" y="162" width="36" height="9" rx="4" fill="#ff3df2"/>
+    <circle cx="91" cy="179" r="2.4" fill="#22e6ff"/><circle cx="100" cy="179" r="2.4" fill="#22e6ff"/><circle cx="109" cy="179" r="2.4" fill="#22e6ff"/>
+    <circle cx="91" cy="187" r="2.4" fill="#22e6ff" opacity=".5"/><circle cx="100" cy="187" r="3" fill="#ffe24d"/>
+    <rect x="46" y="156" width="18" height="36" rx="9" fill="#151838" stroke="url(#n)" stroke-width="2.5"/>
+    <g class="w"><rect x="136" y="146" width="18" height="38" rx="9" fill="#151838" stroke="url(#n)" stroke-width="2.5"/></g>
+  </g>
+</svg>

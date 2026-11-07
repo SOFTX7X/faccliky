@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Faccliky</title>
+  <meta name="theme-color" content="#05060f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-page">
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow g1" aria-hidden="true"></div>
+
+  <header class="app-topo">
+    <a href="#hoje" class="logo">
+      <span class="logo-mark">F</span>
+      <span class="logo-text">Faccliky</span>
+    </a>
+    <a href="#config" class="topo-config" aria-label="Configurações">⚙️</a>
+  </header>
+
+  <nav class="lateral" id="nav">
+    <a href="#hoje" class="logo lateral-logo">
+      <span class="logo-mark">F</span>
+      <span class="logo-text">Faccliky</span>
+    </a>
+    <a href="#hoje" data-tela="hoje"><span>🏠</span>Hoje</a>
+    <a href="#agenda" data-tela="agenda"><span>🗓️</span>Agenda</a>
+    <a href="#kliky" data-tela="kliky" class="nav-kliky"><span>🤖</span>Kliky</a>
+    <a href="#contas" data-tela="contas"><span>💰</span>Contas</a>
+    <a href="#habitos" data-tela="habitos"><span>🔥</span>Hábitos</a>
+    <a href="#grupos" data-tela="grupos"><span>👥</span>Grupos</a>
+    <a href="#plano" data-tela="plano" class="so-pc"><span>⭐</span>Plano</a>
+    <a href="#config" data-tela="config" class="so-pc"><span>⚙️</span>Configurações</a>
+  </nav>
+
+  <main class="conteudo" id="conteudo">
+    <div class="carregando"><img src="assets/kliky.svg" alt="" width="90" height="104"><p>Carregando…</p></div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="api.js"></script>
+  <script src="kliky.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
