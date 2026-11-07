@@ -16,10 +16,9 @@ Agenda inteligente com o assistente **Kliky**. 7 dias de Premium grátis; depois
 
 ## Rodar no PC (Windows)
 
-1. **Banco:** no PostgreSQL, crie um banco chamado `faccliky` (separado do BLACKE).
-2. **Configuração:** em `server/`, copie `.env.example` para `.env` e preencha a senha do PostgreSQL e o `SEGREDO_TOKEN`.
-3. **Iniciar:** dê dois cliques em `server/iniciar.bat`. Ele instala o necessário, cria as tabelas sozinho e reinicia se o servidor cair.
-4. **Testar:** abra `http://localhost:3100/api/saude`. Deve aparecer `"ok":true`.
+1. **Banco:** no PostgreSQL, crie um banco chamado `faccliky` (separado do BLACKE, que usa o banco `blacke`).
+2. **Iniciar:** dê dois cliques em `server/iniciar.bat`. Na primeira vez ele instala o necessário e pede só a senha do PostgreSQL; cria o arquivo `.env` sozinho, cria as tabelas e reinicia se o servidor cair.
+3. **Testar:** abra `http://localhost:3100/api/saude`. Deve aparecer `"ok":true`.
 
 ## Publicar
 
