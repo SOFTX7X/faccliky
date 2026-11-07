@@ -1,88 +1,48 @@
-// Ano no rodapé
-document.getElementById("year").textContent = new Date().getFullYear();
+// Ícones, papéis de parede e faixa de palavras
+Temas.preencherIcones();
+const esc = s => String(s).replace(/"/g, "&quot;");
+const papeis = document.getElementById("papeis");
+if (papeis) papeis.innerHTML = Temas.PRONTOS.slice(0, 12).map(p => `<div class="papel-mini" style="background:${esc(p.css)}"></div>`).join("");
+const palavras = ["Agenda", "Kliky", "Contas", "Hábitos", "Grupos", "Perfil", "Papéis de parede"];
+const trilho = document.getElementById("trilho");
+if (trilho) trilho.innerHTML = [...palavras, ...palavras].map(p => `<span>${p}</span>`).join("");
+document.getElementById("ano").textContent = new Date().getFullYear();
 
 // Menu do celular
 const menu = document.getElementById("menu");
-document.getElementById("menuToggle").addEventListener("click", () => menu.classList.toggle("open"));
+document.getElementById("menuBt").addEventListener("click", () => menu.classList.toggle("open"));
 menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
 
-// Animação ao rolar
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add("show");
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+// Entrada suave ao rolar
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add("show"); io.unobserve(e.target);
+  if (e.target.querySelector("#chips")) setTimeout(() => document.getElementById("chips").classList.add("riscar"), 700);
+}), { threshold: 0.15 });
+document.querySelectorAll(".rev").forEach(el => io.observe(el));
 
-// Kliky: falas do balão
-const bubble = document.getElementById("botBubble");
-const falas = [
-  "Oi! Eu sou o Kliky",
-  "Me diz \"dentista sexta 15h\" que eu organizo.",
-  "Eu te aviso antes das contas vencerem",
-  "Bora montar seu dia juntos?",
-  "Bebeu água hoje? Eu lembro você"
-];
-let fala = 0;
-setInterval(() => {
-  bubble.classList.add("hide");
-  setTimeout(() => {
-    fala = (fala + 1) % falas.length;
-    bubble.textContent = falas[fala];
-    bubble.classList.remove("hide");
-  }, 300);
-}, 3500);
-
-// Kliky: olhos seguem o mouse/dedo
-const bot = document.getElementById("bot");
-const eyes = document.getElementById("eyes");
-function olhar(x, y) {
-  const r = bot.getBoundingClientRect();
-  const dx = (x - (r.left + r.width / 2)) / r.width;
-  const dy = (y - (r.top + r.height / 2.6)) / r.height;
-  const max = 6;
-  eyes.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 14))}px, ${Math.max(-max, Math.min(max, dy * 14))}px)`;
-}
-window.addEventListener("mousemove", e => olhar(e.clientX, e.clientY));
-window.addEventListener("touchmove", e => olhar(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-
-// Demonstração: digitando
-const exemplos = [
-  { texto: "dentista sexta às 15h", titulo: "Dentista", quando: "Sexta, 15:00", aviso: "Aviso 1h antes" },
-  { texto: "pagar luz dia 10", titulo: "Conta de luz", quando: "Dia 10, o dia todo", aviso: "Aviso 2 dias antes" },
-  { texto: "academia seg qua sex 7h", titulo: "Academia", quando: "Seg, Qua e Sex, 07:00", aviso: "Hábito da semana" },
-  { texto: "reunião com a equipe amanhã 9h", titulo: "Reunião da equipe", quando: "Amanhã, 09:00", aviso: "Compartilhado com 4 pessoas" }
-];
-const typing = document.getElementById("typing");
-const demoEvent = document.getElementById("demoEvent");
-const evTitle = document.getElementById("evTitle");
-const evWhen = document.getElementById("evWhen");
-const evAlert = document.getElementById("evAlert");
-let ex = 0;
-
-function digitar() {
-  const atual = exemplos[ex];
-  typing.textContent = "";
-  demoEvent.classList.add("hide");
+// Demonstração digitando
+(function () {
+  const frases = [
+    { t: "dentista sexta às 15h", n: "Dentista", q: "Sexta, 15:00", a: "Aviso 1h antes" },
+    { t: "pagar a luz dia 10, 120 reais", n: "Luz · R$ 120,00", q: "Dia 10", a: "Aviso 2 dias antes" },
+    { t: "estudar inglês amanhã 8h", n: "Estudar inglês", q: "Amanhã, 08:00", a: "Aviso 15 min antes" }
+  ];
+  const caixa = document.getElementById("digita"), ev = document.getElementById("evento");
+  const T = document.getElementById("evT"), Q = document.getElementById("evQ"), A = document.getElementById("evA");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { caixa.textContent = frases[0].t; ev.classList.add("on"); return; }
   let i = 0;
-  const t = setInterval(() => {
-    typing.textContent += atual.texto[i++];
-    if (i >= atual.texto.length) {
-      clearInterval(t);
-      setTimeout(() => {
-        evTitle.textContent = atual.titulo;
-        evWhen.textContent = atual.quando;
-        evAlert.textContent = atual.aviso;
-        demoEvent.classList.remove("hide");
-      }, 400);
-      setTimeout(() => {
-        ex = (ex + 1) % exemplos.length;
-        digitar();
-      }, 3200);
-    }
-  }, 70);
-}
-digitar();
+  async function ciclo() {
+    const f = frases[i++ % frases.length];
+    ev.classList.remove("on"); caixa.textContent = "";
+    for (const c of f.t) { caixa.textContent += c; await new Promise(r => setTimeout(r, 55)); }
+    await new Promise(r => setTimeout(r, 350));
+    T.textContent = f.n; Q.textContent = f.q; A.textContent = f.a; ev.classList.add("on");
+    setTimeout(ciclo, 3200);
+  }
+  const vis = new IntersectionObserver(es => { if (es[0].isIntersecting) { vis.disconnect(); ciclo(); } });
+  vis.observe(caixa);
+})();
+
+// Fundo de quadradinhos (módulo pixels.js)
+Pixels.iniciar(document.getElementById("pixels"), { foco: "dir", qtd: innerWidth < 700 ? 70 : 150 });

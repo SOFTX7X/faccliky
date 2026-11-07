@@ -84,3 +84,13 @@ CREATE TABLE IF NOT EXISTS pagamentos (
   dados       JSONB,
   criado_em   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Perfil e aparência (v2)
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS usuario      VARCHAR(20);
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS bio          VARCHAR(160);
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS avatar       TEXT;
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS capa         TEXT;
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS papel        TEXT;
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS papel_escuro SMALLINT NOT NULL DEFAULT 35;
+UPDATE usuarios SET usuario = 'user' || id WHERE usuario IS NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS usuarios_usuario_unico ON usuarios (lower(usuario));

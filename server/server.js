@@ -72,10 +72,42 @@ const temPremium = u => plano(u).status !== "basico";
 
 function publico(u) {
   return {
-    id: u.id, nome: u.nome, email: u.email,
+    id: u.id, nome: u.nome, email: u.email, usuario: u.usuario || null, bio: u.bio || null,
+    avatar: u.avatar || null, capa: u.capa || null, papel: u.papel || null,
+    papel_escuro: u.papel_escuro ?? 35,
     meta_gasto: u.meta_gasto === null ? null : Number(u.meta_gasto),
     criado_em: u.criado_em, plano: plano(u)
   };
+}
+
+// @usuário: 3 a 20 caracteres (letras, números, ponto e _)
+const RESERVADOS = new Set(["admin", "administrador", "faccliky", "suporte", "ajuda", "contato", "sistema", "kliky", "root", "api", "app", "entrar", "cadastro", "blacke"]);
+function nomeUsuario(v) {
+  const s = String(v ?? "").trim().toLowerCase().replace(/^@/, "");
+  if (!/^[a-z0-9_.]{3,20}$/.test(s) || /^\.|\.$|\.\./.test(s))
+    throw new Erro(400, "O @ deve ter de 3 a 20 caracteres: letras, números, ponto ou _.");
+  if (RESERVADOS.has(s)) throw new Erro(400, "Esse @ não está disponível.");
+  return s;
+}
+// Imagem enviada pelo app (já reduzida no navegador) ou papel pronto ("p:nome")
+function imagem(v, max, aceitaPronto = false) {
+  if (v === null || v === "") return null;
+  const s = String(v);
+  if (aceitaPronto && /^p:[a-z0-9-]{1,30}$/.test(s)) return s;
+  if (!/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(s)) throw new Erro(400, "Imagem inválida.");
+  if (s.length > max) throw new Erro(413, "Imagem grande demais. Escolha uma menor.");
+  return s;
+}
+async function gerarUsuario(db, base) {
+  let b = String(base || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9_.]/g, "").replace(/^\.+|\.+$/g, "").replace(/\.{2,}/g, ".").slice(0, 14);
+  if (b.length < 3) b = ("user" + b).slice(0, 14);
+  for (let i = 0; i < 12; i++) {
+    const cand = i === 0 && !RESERVADOS.has(b) ? b : b + String(Math.floor(Math.random() * 9000) + 1000);
+    const { rows } = await db.query("SELECT 1 FROM usuarios WHERE lower(usuario) = $1", [cand]);
+    if (!rows.length) return cand;
+  }
+  return b + Date.now().toString().slice(-6);
 }
 
 // Limite simples de tentativas (login/cadastro)
@@ -152,30 +184,55 @@ function criarServidor(db) {
     if (senha.length < 6 || senha.length > 200) throw new Erro(400, "A senha precisa ter pelo menos 6 caracteres.");
     const existe = await db.query("SELECT id FROM usuarios WHERE email = $1", [email]);
     if (existe.rows.length) throw new Erro(409, "Este e-mail já tem conta. Entre com ele.");
+    let usuario;
+    if (corpo.usuario) {
+      usuario = nomeUsuario(corpo.usuario);
+      const em = await db.query("SELECT 1 FROM usuarios WHERE lower(usuario) = $1", [usuario]);
+      if (em.rows.length) throw new Erro(409, "Esse @ já está em uso. Escolha outro.");
+    } else usuario = await gerarUsuario(db, String(corpo.usuario_auto || "").slice(0, 40) || email.split("@")[0]);
     const { rows } = await db.query(
-      "INSERT INTO usuarios (nome, email, senha_hash) VALUES ($1, $2, $3) RETURNING *",
-      [nome, email, hashSenha(senha)]);
+      "INSERT INTO usuarios (nome, email, usuario, senha_hash) VALUES ($1, $2, $3, $4) RETURNING *",
+      [nome, email, usuario, hashSenha(senha)]);
     return { status: 201, dados: { token: criarToken(rows[0].id, SEGREDO), usuario: publico(rows[0]) } };
   }, { publica: true });
 
   rota("POST", "/api/entrar", async ({ corpo, ip }) => {
     limitar("ent:" + ip, 12);
-    const email = String(corpo.email || "").trim().toLowerCase();
-    const { rows } = await db.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+    const id = String(corpo.email || "").trim().toLowerCase();
+    const porEmail = id.includes("@") && !id.startsWith("@");
+    const { rows } = await db.query(
+      porEmail ? "SELECT * FROM usuarios WHERE email = $1" : "SELECT * FROM usuarios WHERE lower(usuario) = $1",
+      [porEmail ? id : id.replace(/^@/, "")]);
     if (!rows[0] || !conferirSenha(String(corpo.senha || ""), rows[0].senha_hash))
-      throw new Erro(401, "E-mail ou senha incorretos.");
+      throw new Erro(401, "Dados de entrada incorretos.");
     return { token: criarToken(rows[0].id, SEGREDO), usuario: publico(rows[0]) };
   }, { publica: true });
 
   // Minha conta
   rota("GET", "/api/eu", async ({ u }) => publico(u));
   rota("PUT", "/api/eu", async ({ u, corpo }) => {
-    const nome = corpo.nome !== undefined ? texto(corpo.nome, 80, true, "o nome") : u.nome;
-    const meta = corpo.meta_gasto !== undefined ? numero(corpo.meta_gasto) : u.meta_gasto;
+    const tem = k => corpo[k] !== undefined;
+    const novo = {
+      nome: tem("nome") ? texto(corpo.nome, 80, true, "o apelido") : u.nome,
+      usuario: u.usuario,
+      bio: tem("bio") ? texto(corpo.bio, 160) : u.bio,
+      avatar: tem("avatar") ? imagem(corpo.avatar, 120000) : u.avatar,
+      capa: tem("capa") ? imagem(corpo.capa, 450000, true) : u.capa,
+      papel: tem("papel") ? imagem(corpo.papel, 450000, true) : u.papel,
+      papel_escuro: tem("papel_escuro") ? inteiro(corpo.papel_escuro, 0, 85, 35) : (u.papel_escuro ?? 35),
+      meta_gasto: tem("meta_gasto") ? numero(corpo.meta_gasto) : u.meta_gasto
+    };
+    if (tem("usuario")) {
+      novo.usuario = nomeUsuario(corpo.usuario);
+      const em = await db.query("SELECT 1 FROM usuarios WHERE lower(usuario) = $1 AND id <> $2", [novo.usuario, u.id]);
+      if (em.rows.length) throw new Erro(409, "Esse @ já está em uso. Escolha outro.");
+    }
     const { rows } = await db.query(
-      "UPDATE usuarios SET nome = $1, meta_gasto = $2 WHERE id = $3 RETURNING *", [nome, meta, u.id]);
+      `UPDATE usuarios SET nome=$1, usuario=$2, bio=$3, avatar=$4, capa=$5, papel=$6, papel_escuro=$7, meta_gasto=$8
+        WHERE id=$9 RETURNING *`,
+      [novo.nome, novo.usuario, novo.bio, novo.avatar, novo.capa, novo.papel, novo.papel_escuro, novo.meta_gasto, u.id]);
     return publico(rows[0]);
-  });
+  }, { limite: 900000 });
   rota("PUT", "/api/eu/senha", async ({ u, corpo }) => {
     if (!conferirSenha(String(corpo.atual || ""), u.senha_hash)) throw new Erro(400, "Senha atual incorreta.");
     const nova = String(corpo.nova || "");
@@ -327,7 +384,7 @@ function criarServidor(db) {
   rota("GET", "/api/agendas", async ({ u }) => {
     const { rows } = await db.query(
       `SELECT a.id, a.nome, a.dono_id, (a.dono_id = $1) AS sou_dono,
-              (SELECT json_agg(json_build_object('id', us.id, 'nome', us.nome, 'email', us.email) ORDER BY us.nome)
+              (SELECT json_agg(json_build_object('id', us.id, 'nome', us.nome, 'email', us.email, 'usuario', us.usuario) ORDER BY us.nome)
                  FROM agenda_membros m JOIN usuarios us ON us.id = m.usuario_id WHERE m.agenda_id = a.id) AS membros
          FROM agendas a
         WHERE a.id IN (SELECT agenda_id FROM agenda_membros WHERE usuario_id = $1)
@@ -354,8 +411,12 @@ function criarServidor(db) {
   rota("POST", "/api/agendas/:id/membros", async ({ u, corpo, p }) => {
     exigirPremium(u);
     await agendaDoDono(p.id, u);
-    const email = String(corpo.email || "").trim().toLowerCase();
-    const { rows } = await db.query("SELECT id, nome, email FROM usuarios WHERE email = $1", [email]);
+    const quem = String(corpo.usuario || corpo.email || "").trim().toLowerCase();
+    const porEmail = quem.includes("@") && !quem.startsWith("@");
+    const { rows } = await db.query(
+      porEmail ? "SELECT id, nome, email, usuario FROM usuarios WHERE email = $1"
+               : "SELECT id, nome, email, usuario FROM usuarios WHERE lower(usuario) = $1",
+      [porEmail ? quem : quem.replace(/^@/, "")]);
     if (!rows[0]) throw new Erro(404, "Essa pessoa ainda não tem conta no Faccliky.");
     await db.query(
       "INSERT INTO agenda_membros (agenda_id, usuario_id) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING agenda_id",
@@ -438,7 +499,7 @@ function criarServidor(db) {
       if (!achou) return responder(404, { erro: "Rota não encontrada." });
 
       const ip = String(req.headers["cf-connecting-ip"] || req.socket.remoteAddress || "");
-      const corpo = ["POST", "PUT", "DELETE"].includes(req.method) ? (await lerCorpo(req)).json : {};
+      const corpo = ["POST", "PUT", "DELETE"].includes(req.method) ? (await lerCorpo(req, achou.limite)).json : {};
       const u = achou.publica ? null : await usuarioAtual(req);
       const r = await achou.fn({ req, url, corpo, p, u, ip });
       if (r && r.status && "dados" in r) return responder(r.status, r.dados);

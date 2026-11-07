@@ -46,7 +46,7 @@ function confirmarToque(botao, acao) {
 }
 
 // ---------- Dados ----------
-async function carregarEu() { S.eu = await api("GET", "/eu"); }
+async function carregarEu() { S.eu = await api("GET", "/eu"); if (window.aoCarregarEu) window.aoCarregarEu(); }
 async function carregarEventos() {
   const de = somarDias(inicioDoDia(), -60).toISOString();
   const ate = somarDias(inicioDoDia(), 180).toISOString();
@@ -108,63 +108,6 @@ function ligarConcluir(raiz = tela) {
 // ---------- Telas ----------
 const telas = {};
 
-telas.hoje = () => {
-  const agora = new Date();
-  const h = agora.getHours();
-  const saud = h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite";
-  const evHoje = eventosDoDia(agora);
-  const diaTodo = evHoje.filter(e => e.dia_todo);
-  let dia = "";
-
-  if (premium()) {
-    const { linha, naoCoube } = Kliky.planejarDia(evHoje.filter(e => !e.concluido), tarefasPendentes(), agora);
-    dia = `
-      <div class="bloco-topo"><h2>Seu dia</h2><button class="link" id="reorg">↻ Reorganizar</button></div>
-      ${diaTodo.map(e => itemEvento(e)).join("")}
-      ${linha.length ? `<div class="linha-tempo">${linha.map(e => itemEvento(e)).join("")}</div>`
-        : `<p class="vazio">Nada marcado para o resto de hoje. Aproveite!</p>`}
-      ${naoCoube.length ? `<p class="aviso-leve">Não coube hoje: ${naoCoube.map(t => esc(t.titulo)).join(", ")}.</p>` : ""}`;
-  } else {
-    dia = `<div class="bloco-topo"><h2>Hoje</h2></div>
-      ${evHoje.length ? evHoje.map(e => itemEvento(e)).join("") : `<p class="vazio">Nada marcado para hoje.</p>`}`;
-  }
-
-  const limite = somarDias(inicioDoDia(), 3);
-  const contasPerto = S.contas.filter(c => !c.paga && diaDeConta(c.vencimento) <= limite);
-  const hojeISO = diaISO(agora);
-
-  tela.innerHTML = `
-    <div class="cabeca">
-      <div><p class="sub">${esc(dataLonga(agora))}</p><h1>${saud}, ${esc(S.eu.nome.split(" ")[0])}!</h1></div>
-    </div>
-    ${faixaPlano()}
-    <form class="rapido" id="rapido">
-      <img src="assets/kliky.svg" alt="" width="34" height="39">
-      <input name="t" placeholder='Ex.: "dentista sexta 15h"' autocomplete="off" maxlength="200">
-      <button class="btn btn-small" type="submit">Criar</button>
-    </form>
-    <section class="bloco">${dia}</section>
-    ${contasPerto.length ? `<section class="bloco"><div class="bloco-topo"><h2>Contas vencendo</h2><a class="link" href="#contas">Ver todas</a></div>
-      ${contasPerto.map(c => `<div class="item"><div class="item-corpo"><strong>${esc(c.descricao)}</strong>
-        <span class="item-meta"><span>${real(c.valor)}</span><span class="${diaDeConta(c.vencimento) < inicioDoDia() ? "atrasada" : ""}">vence ${esc(dataCurta(diaDeConta(c.vencimento)))}</span></span></div></div>`).join("")}</section>` : ""}
-    ${S.habitos.length ? `<section class="bloco"><div class="bloco-topo"><h2>Hábitos de hoje</h2><a class="link" href="#habitos">Ver todos</a></div>
-      <div class="chips">${S.habitos.map(hb => `<button class="chip ${hb.dias.includes(hojeISO) ? "ok" : ""}" data-habito="${hb.id}">${esc(hb.nome)}</button>`).join("")}</div></section>` : ""}
-  `;
-
-  $("#rapido").addEventListener("submit", async ev => {
-    ev.preventDefault();
-    const t = ev.target.t.value.trim();
-    if (!t) return;
-    if (!premium()) { toast("O assistente Kliky é do Premium. Use o botão + na Agenda."); return; }
-    const r = await criarPeloKliky(t);
-    if (r) { ev.target.reset(); toast(r); render(); }
-  });
-  const reorg = $("#reorg");
-  if (reorg) reorg.addEventListener("click", () => { render(); toast("Dia reorganizado a partir de agora"); });
-  ligarConcluir();
-  tela.querySelectorAll("[data-habito]").forEach(b => b.addEventListener("click", () => marcarHabito(Number(b.dataset.habito), hojeISO)));
-};
-
 telas.agenda = () => {
   const base = somarDias(inicioDoDia(), S.semana * 7);
   const dias = [...Array(7)].map((_, i) => somarDias(base, i));
@@ -172,7 +115,7 @@ telas.agenda = () => {
   tela.innerHTML = `
     <div class="cabeca">
       <div><p class="sub">Próximos 7 dias</p><h1>Agenda</h1></div>
-      <a href="#novo" class="btn btn-small">+ Novo</a>
+      <a href="#novo" class="btn btn-small">${Temas.ico("plus", 16)} Novo</a>
     </div>
     <div class="semana-nav">
       <button class="link" id="ant">‹ Anterior</button>
@@ -518,10 +461,10 @@ telas.grupos = () => {
             ${a.sou_dono ? `<button class="link pequeno" data-apagar-ag="${a.id}">Apagar grupo</button>`
               : `<button class="link pequeno" data-sair="${a.id}">Sair do grupo</button>`}
           </div>
-          <div class="membros">${(a.membros || []).map(m => `<span class="pill">${esc(m.nome)}${m.id === a.dono_id ? "" : ""}
+          <div class="membros">${(a.membros || []).map(m => `<span class="pill">${esc(m.nome)}${m.usuario ? ` <small>@${esc(m.usuario)}</small>` : ""}${m.id === a.dono_id ? " · dono" : ""}
             ${a.sou_dono && m.id !== a.dono_id ? `<button class="x" data-remover="${a.id}:${m.id}" aria-label="Remover">✕</button>` : ""}</span>`).join("")}</div>
           ${a.sou_dono && podeCriar ? `<form class="linha-form" data-add="${a.id}">
-            <input type="email" name="email" required placeholder="E-mail de quem já tem conta">
+            <input type="text" name="quem" required placeholder="@usuário ou e-mail de quem já tem conta" autocapitalize="none">
             <button class="btn btn-small" type="submit">Adicionar</button>
           </form>` : ""}
         </div>`).join("") : `<p class="vazio">Você ainda não participa de nenhum grupo.</p>`}
@@ -538,7 +481,7 @@ telas.grupos = () => {
   });
   tela.querySelectorAll("[data-add]").forEach(f => f.addEventListener("submit", async ev => {
     ev.preventDefault();
-    await tentar(() => api("POST", `/agendas/${f.dataset.add}/membros`, { email: f.email.value }), "Pessoa adicionada");
+    await tentar(() => api("POST", `/agendas/${f.dataset.add}/membros`, { usuario: f.quem.value }), "Pessoa adicionada");
     await carregarAgendas(); render();
   }));
   tela.querySelectorAll("[data-remover]").forEach(b => b.addEventListener("click", async () => {
@@ -584,11 +527,7 @@ telas.plano = () => {
 telas.config = () => {
   const notif = "Notification" in window ? Notification.permission : "indisponivel";
   tela.innerHTML = `
-    <div class="cabeca"><div><p class="sub">${esc(S.eu.email)}</p><h1>Configurações</h1></div></div>
-    <form class="form cartao linha-form" id="fNome">
-      <label>Seu nome<input name="nome" required maxlength="80" value="${esc(S.eu.nome)}"></label>
-      <button class="btn btn-small" type="submit">Salvar</button>
-    </form>
+    <div class="cabeca"><div><p class="sub"><a href="#perfil" class="link">‹ Perfil</a></p><h1>Configurações</h1></div></div>
     <section class="cartao config-linha">
       <div><strong>Avisos no aparelho</strong><p class="sub">${notif === "granted" ? "Ativados" : notif === "denied" ? "Bloqueados no navegador" : notif === "indisponivel" ? "Não suportado neste navegador" : "Receba lembretes dos compromissos"}</p></div>
       ${notif === "default" ? `<button class="btn btn-small" id="ativarNotif">Ativar</button>` : ""}
@@ -614,10 +553,6 @@ telas.config = () => {
         <button class="btn btn-ghost btn-small" type="submit">Excluir conta</button>
       </div>
     </form>`;
-  $("#fNome").addEventListener("submit", async ev => {
-    ev.preventDefault();
-    S.eu = await tentar(() => api("PUT", "/eu", { nome: ev.target.nome.value }), "Nome salvo");
-  });
   const an = $("#ativarNotif");
   if (an) an.addEventListener("click", async () => { await Notification.requestPermission(); render(); });
   $("#fSenha").addEventListener("submit", async ev => {
@@ -642,10 +577,12 @@ function render() {
   const [nome, arg] = (location.hash.slice(1) || "hoje").split("/");
   const fn = telas[nome] || telas.hoje;
   document.querySelectorAll("#nav [data-tela]").forEach(a => {
-    const ativa = a.dataset.tela === nome || (a.dataset.tela === "agenda" && ["novo", "editar"].includes(nome));
+    const ativa = a.dataset.tela === nome || (a.dataset.tela === "agenda" && ["novo", "editar"].includes(nome)) || (a.dataset.tela === "perfil" && nome === "editar-perfil");
     a.classList.toggle("ativo", ativa);
   });
+  document.body.classList.toggle("em-hoje", nome === "hoje");
   fn(arg);
+  if (window.aoRenderizar) window.aoRenderizar(nome);
 }
 window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
 
@@ -684,7 +621,7 @@ function checarLembretes() {
 }
 
 // ---------- Início ----------
-(async () => {
+window.addEventListener("load", async () => {
   try {
     await carregarTudo();
     render();
@@ -695,4 +632,4 @@ function checarLembretes() {
     tela.innerHTML = `<div class="bloqueio"><img src="assets/kliky.svg" alt="" width="100" height="115">
       <h2>Não consegui conectar</h2><p>${esc(e.message)}</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>`;
   }
-})();
+});
